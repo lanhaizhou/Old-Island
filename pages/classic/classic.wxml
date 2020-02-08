@@ -1,0 +1,16 @@
+<!--pages/classic/classic.wxml-->
+<view class='container'>
+	<view class='header'>
+		<v-epsoide index='{{classic.index}}' />
+		<view class="like-container">
+			<v-like bind:like='onLike' like='{{classic.like_status}}' count='{{classic.fav_nums}}' />
+			<!-- <img-btn-cmp class="share-btn" open-type="share">
+			<image class="share" slot="img" src="/images/icon/share.png" />
+		</img-btn-cmp> -->
+		</view>
+	</view>
+
+
+	<v-movie img='{{classic.image}}' content='{{classic.content}}' />
+	<v-navi class='navi' title='{{classic.title}}' first='{{first}}' latest='{{latest}}' catch:left="onNext" catch:right="onPrevious" />
+</view>

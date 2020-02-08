@@ -1,0 +1,22 @@
+<!--components/epsoide/index.wxml-->
+<wxs module="supplement">
+	var zero = function(value) {
+		return value < 10 ? '0' + value : value
+	}
+	module.exports = {
+		zero: zero
+	}
+</wxs>
+
+<view class="container">
+	<view class="index-container">
+		<text class="plain">No.</text>
+		<text class="index">{{supplement.zero(index)}}</text>
+		<view class="line"></view>
+	</view>
+	<text>|</text>
+	<view class="date-container">
+		<text class="month">{{month}}</text>
+		<text class="year">{{year}}</text>
+	</view>
+</view>
