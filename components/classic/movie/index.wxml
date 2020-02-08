@@ -1,5 +1,5 @@
 <!--components/classic/movie/index.wxml-->
-<view class="classic-container">
+<view class="classic-container" hidden="{{hidden}}">
   <image src="{{img}}" class="classic-img"></image>
   <image class='tag' src="images/movie@tag.png" />
   <text class="content">{{content}}</text>

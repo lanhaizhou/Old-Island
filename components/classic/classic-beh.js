@@ -1,11 +1,13 @@
 let classicBehavior = Behavior({
   properties: {
-    type:String,
-    img:String,
-    content:String
+    type: String,
+    img: String,
+    content: String,
+    hidden: Boolean,
   },
-  data: {
-  }
+  data: {}
 })
 
-export { classicBehavior }
+export {
+  classicBehavior
+}
