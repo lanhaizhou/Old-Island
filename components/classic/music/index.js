@@ -1,19 +1,17 @@
-// components/classic/music/music.js
+// components/classic/music/index.js
 import {
   classicBehavior
 } from '../classic-beh.js'
-
-let mMgr = wx.getBackgroundAudioManager()
+const mMgr = wx.getBackgroundAudioManager()
 
 Component({
   /**
    * 组件的属性列表
    */
   behaviors: [classicBehavior],
-
   properties: {
     src: String,
-    title:String
+    title: String,
   },
 
   /**
@@ -25,69 +23,69 @@ Component({
     playingUrl: 'images/player@playing.png'
   },
 
-  attached: function() {
-    this._recoverPlaying()
-    this._monitorSwitch()
-  },
-
-  detached: function() {
-    // wx.pauseBackgroundAudio()
+  lifetimes:{
+    attached:function(){
+      this._recoverStatus()
+      this._monitorSwitch()
+    }
   },
 
   /**
    * 组件的方法列表
    */
   methods: {
-    onPlay: function(event) {
-      if (!this.data.playing) {
+    onPlay: function () {
+      const {
+        src,
+        title,
+        playing,
+      } = this.data
+
+      if (!playing) {
         this.setData({
           playing: true,
         })
-        if(mMgr.src == this.properties.src){
-          mMgr.play()
-        }
-        else{
-          mMgr.src = this.properties.src
-        }
-        mMgr.title = this.properties.title
+        mMgr.src = src
+        mMgr.title = title
       } else {
         this.setData({
           playing: false,
         })
         mMgr.pause()
       }
+
+
     },
 
-    _recoverPlaying: function() {
+    _recoverStatus: function () {
       if (mMgr.paused) {
         this.setData({
-          playing: false
+          playing: false,
         })
         return
       }
+
       if (mMgr.src == this.properties.src) {
-        if (!mMgr.paused) {
-          this.setData({
-            playing: true
-          })
-        }
+        this.setData({
+          playing: true
+        })
       }
     },
 
     _monitorSwitch: function() {
       mMgr.onPlay(() => {
-        this._recoverPlaying()
+        this._recoverStatus()
       })
       mMgr.onPause(() => {
-        this._recoverPlaying()
+        this._recoverStatus()
       })
       mMgr.onStop(() => {
-        this._recoverPlaying()
+        this._recoverStatus()
       }),
       mMgr.onEnded(()=>{
-        this._recoverPlaying()
+        this._recoverStatus()
       })
-    }
+    },
 
   }
 })

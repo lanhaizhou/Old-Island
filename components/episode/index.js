@@ -7,7 +7,7 @@ Component({
     index: {
       type: Number,
       observer: function (newVal, oldVal, changePath) {
-        console.log(newVal, oldVal, changePath)
+        // console.log(newVal, oldVal, changePath)
         const val = newVal < 10 ? `0${newVal}` : `${newVal}`
         this.setData({
           _index: val

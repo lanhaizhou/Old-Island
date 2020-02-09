@@ -1,10 +1,10 @@
+/* components/classic/music/index.wxss */
+
 .classic-img {
   width: 422rpx;
   height: 422rpx;
   margin-top: 60rpx;
-  /* margin-bottom: 120rpx; */
   border-radius: 70%;
-  /* margin-bottom: -50px; */
   overflow: hidden;
 }
 

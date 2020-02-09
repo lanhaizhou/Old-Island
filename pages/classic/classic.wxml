@@ -12,7 +12,7 @@
 
 
 	<v-movie hidden='{{classic.type!=100}}' img='{{classic.image}}' content='{{classic.content}}' />
-	<v-music hidden='{{classic.type!=200}}' img='{{classic.image}}' content='{{classic.content}}' />
+	<v-music wx:if='{{classic.type==200}}' img='{{classic.image}}' content='{{classic.content}}' src='{{classic.url}}' title='{{classic.title}}' />
 	<v-essay hidden='{{classic.type!=300}}' img='{{classic.image}}' content='{{classic.content}}' />
 	<v-navi class='navi' title='{{classic.title}}' first='{{first}}' latest='{{latest}}' catch:left="onNext" catch:right="onPrevious" />
 </view>
