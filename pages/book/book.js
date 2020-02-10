@@ -10,15 +10,29 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    books: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    const hotList = bookModel.getHotList()
-    hotList.then(res => console.log(res))
+
+    // 链式调用api举例 
+    // bookModel.getHotList().then(res => {
+    //   return bookModel.getMyBookCount()
+    // }).then(res => {
+    //   return bookModel.getMyBookCount()
+    // }).then(res => {
+    //   console.log(res)
+    // })
+
+    bookModel.getHotList().then(res => {
+      this.setData({
+        books: res
+      })
+    })
+
   },
 
   /**
