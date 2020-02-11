@@ -55,7 +55,7 @@
 	</view>
 </view>
 
-<mask-cmp wx:if="{{posting}}" />
+<v-mask wx:if="{{posting}}" />
 
 <view wx:if="{{posting}}" class="posting-container">
 	<view class="post-header">

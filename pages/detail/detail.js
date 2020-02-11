@@ -2,7 +2,11 @@
 import {
   BookModel
 } from '../../models/book'
+import {
+  LikeModel
+} from '../../models/like'
 const bookModel = new BookModel()
+const likeModel = new LikeModel()
 
 Page({
 
@@ -15,7 +19,54 @@ Page({
     likeStatus: false,
     likeCount: 0,
     noComment: true,
+    posting: false,
   },
+
+  onLike: function (event) {
+    const like_or_cancel = event.detail.behavior
+    likeModel.like(like_or_cancel, this.data.book.id, 400)
+  },
+
+  onFakePost: function () {
+    this.setData({
+      posting: true
+    })
+  },
+
+  onCancel: function () {
+    this.setData({
+      posting: false
+    })
+  },
+
+  onPost: function (event) {
+    const comment = event.detail.text || event.detail.value
+    if (!comment) return
+    if (comment.length > 12) {
+      wx.showToast({
+        title: '短评最多12个字',
+        icon: 'none'
+      })
+      return
+    }
+
+    bookModel.postComment(this.data.book.id, comment).then(res => {
+      wx.showToast({
+        title: '短评增加成功',
+        icon: 'none'
+      })
+
+      this.data.comments.unshift({
+        content: comment,
+        nums: 1,
+      })
+      this.setData({
+        comments: this.data.comments,
+        posting: false,
+      })
+    })
+  },
+
 
   /**
    * 生命周期函数--监听页面加载
