@@ -49,12 +49,15 @@ Component({
     },
 
     onConfirm(event) {
-      const q = event.detail.value
+      const q = event.detail.value || event.detail.text
+      this.setData({
+        finished: true,
+      })
 
       bookModel.search(0, q).then(res => {
         this.setData({
           dataArray: res.books,
-          finished: true,
+          q,
         })
         keywordModel.addToHistory(q)
       })
@@ -62,7 +65,8 @@ Component({
 
     onDelete() {
       this.setData({
-        finished: false
+        finished: false,
+        q: '',
       })
     }
   }
