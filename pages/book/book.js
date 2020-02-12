@@ -10,7 +10,20 @@ Page({
    * 页面的初始数据
    */
   data: {
-    books: []
+    books: [],
+    searchPanel: false,
+  },
+
+  onActivateSearch: function () {
+    this.setData({
+      searchPanel: true,
+    })
+  },
+
+  onCancel: function () {
+    this.setData({
+      searchPanel: false,
+    })
   },
 
   /**

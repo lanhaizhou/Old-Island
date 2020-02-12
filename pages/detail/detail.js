@@ -76,24 +76,41 @@ Page({
       bid
     } = options
 
-    bookModel.getDetail(bid).then(res => {
-      this.setData({
-        book: res
-      })
-    })
+    // 方法1
+    // bookModel.getDetail(bid).then(res => {
+    //   this.setData({
+    //     book: res
+    //   })
+    // })
+    // bookModel.getComments(bid).then(res => {
+    //   this.setData({
+    //     noComment: res.comments == false ? true : false,
+    //     comments: res.comments
+    //   })
+    // })
+    // bookModel.getLikeStatus(bid).then(res => {
+    //   this.setData({
+    //     likeStatus: res.like_status,
+    //     likeCount: res.fav_nums,
+    //   })
+    // })
 
-    bookModel.getComments(bid).then(res => {
-      this.setData({
-        noComment: res.comments == false ? true : false,
-        comments: res.comments
-      })
-    })
+    // 方法2
+    wx.showLoading({})
+    const detail = bookModel.getDetail(bid)
+    const comments = bookModel.getComments(bid)
+    const likeStatus = bookModel.getLikeStatus(bid)
 
-    bookModel.getLikeStatus(bid).then(res => {
+    // Promise.race() 竞争，.then返回的是最先请求完成的结果
+    Promise.all([detail, comments, likeStatus]).then(res => {
       this.setData({
-        likeStatus: res.like_status,
-        likeCount: res.fav_nums,
+        book: res[0],
+        noComment: res[1].comments == false ? true : false,
+        comments: res[1].comments,
+        likeStatus: res[2].like_status,
+        likeCount: res[2].fav_nums,
       })
+      wx.hideLoading()
     })
 
   },
