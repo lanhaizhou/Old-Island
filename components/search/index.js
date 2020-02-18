@@ -4,7 +4,10 @@ import {
 } from '../../models/keyWord'
 import {
   BookModel
-} from "../../models/book";
+} from "../../models/book"
+import {
+  paginationBev
+} from "../behaviors/pagination"
 const keywordModel = new KeywordModel()
 const bookModel = new BookModel()
 
@@ -12,10 +15,11 @@ Component({
   /**
    * 组件的属性列表
    */
+  behaviors: [paginationBev],
   properties: {
     more: {
       type: String,
-      observer: '_load_more'
+      observer: 'loadMore'
     }
   },
 
@@ -25,7 +29,8 @@ Component({
   data: {
     historyWords: [],
     hotWords: [],
-    dataArray: [],
+    loading: false,
+    loadingCenter: false,
   },
 
   lifetimes: {
@@ -46,34 +51,69 @@ Component({
    * 组件的方法列表
    */
   methods: {
-    _load_more() {
-      console.log('hihihi')
+    loadMore() {
+      if (!this.data.q || this.isLocked()) return
+      if (this.hasMore()) {
+        this.locked()
+        bookModel.search(this.getCurrentStart(), this.data.q).then(res => {
+          this.setMoreData(res.books)
+          this.unLocked()
+        }, () => {
+          this.unLocked()
+        })
+      }
     },
 
     onCancel() {
+      this.initialize()
       this.triggerEvent('cancel', {}, {})
     },
 
     onConfirm(event) {
+      this._showResult()
+      this._showLoadingCenter()
       const q = event.detail.value || event.detail.text
-      this.setData({
-        finished: true,
-      })
-
       bookModel.search(0, q).then(res => {
+        this.setMoreData(res.books)
+        this.setTotal(res.total)
         this.setData({
-          dataArray: res.books,
           q,
         })
         keywordModel.addToHistory(q)
+        this._hideLoadingCenter()
       })
     },
 
     onDelete() {
+      this.initialize()
+      this._closeResult()
+    },
+
+    _showResult() {
+      this.setData({
+        finished: true,
+      })
+    },
+
+    _closeResult() {
       this.setData({
         finished: false,
         q: '',
       })
-    }
+    },
+
+    _showLoadingCenter() {
+      this.setData({
+        loadingCenter: true,
+      })
+    },
+
+    _hideLoadingCenter() {
+      this.setData({
+        loadingCenter: false,
+      })
+    },
+
+
   }
 })
